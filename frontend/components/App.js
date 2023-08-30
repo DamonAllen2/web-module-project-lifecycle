@@ -12,6 +12,7 @@ export default class App extends React.Component {
     this.state = {
       todos: [],
       name: '',
+      showCompleted: true,
     }
   }
   
@@ -31,6 +32,19 @@ export default class App extends React.Component {
     });
   }
 
+  onClick = id => e => {
+    axios.patch(`http://localhost:9000/api/todos/${id}`)
+    .then(res => {
+      this.getTodos();
+    })
+    .catch(err => console.error(err));
+  }
+
+  toggleCompleted = () => {
+    this.setState({ showCompleted: !this.state.showCompleted })
+    console.log(this.state.showCompleted);
+  }
+  
   onChange = e => {
     this.setState({ ...this.state, name: e.target.value })
   }
@@ -46,12 +60,11 @@ export default class App extends React.Component {
   }
 
   render() {
-    console.log(this.state.todos);
     return (
       <div>
       <h2>Todos:</h2>
-      <TodoList todos={this.state.todos} />
-      <Form onSubmit={this.onSubmit} onChange={this.onChange} name={this.state.name} />
+      <TodoList todos={this.state.todos} onClick={this.onClick}/>
+      <Form onSubmit={this.onSubmit} onChange={this.onChange} name={this.state.name} toggle={this.toggleCompleted}/>
       </div>
     )
   }
