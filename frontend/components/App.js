@@ -11,16 +11,38 @@ export default class App extends React.Component {
     super();
     this.state = {
       todos: [],
+      name: '',
     }
   }
-  componentDidMount() {
+  
+  getTodos = () => {
     axios.get('http://localhost:9000/api/todos')
-    .then(res => this.setState({ todos: res.data.data }))
+    .then(res => this.setState({ ...this.state, todos: res.data.data }))
     .catch(err => console.error(err));
   }
 
-  onSubmit = name => {
-    axios.post('');
+  updateTodos = name => {
+    axios.post('http://localhost:9000/api/todos', {
+      'name': this.state.name,
+      'completed': false,
+    })
+    .then(res => {
+      this.getTodos();
+    });
+  }
+
+  onChange = e => {
+    this.setState({ ...this.state, name: e.target.value })
+  }
+
+  onSubmit = e => {
+    e.preventDefault();
+    this.updateTodos(this.state.name);
+    this.setState({ name: '' });
+  }
+
+  componentDidMount() {
+    this.getTodos();
   }
 
   render() {
@@ -29,6 +51,7 @@ export default class App extends React.Component {
       <div>
       <h2>Todos:</h2>
       <TodoList todos={this.state.todos} />
+      <Form onSubmit={this.onSubmit} onChange={this.onChange} name={this.state.name} />
       </div>
     )
   }
