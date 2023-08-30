@@ -1,4 +1,5 @@
 import React from 'react'
+import Todo from './Todo';
 
 export default class TodoList extends React.Component {
   constructor() {
@@ -8,7 +9,7 @@ export default class TodoList extends React.Component {
     return (
       <div>
         {this.props.todos.map((item) => {
-          return (<p key={item.id}>{item.name}</p>)
+          return (<Todo item={item}/>)
         })}
       </div>
     )
