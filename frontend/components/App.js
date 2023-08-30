@@ -60,10 +60,11 @@ export default class App extends React.Component {
   }
 
   render() {
+    console.log(this.state.todos)
     return (
       <div>
       <h2>Todos:</h2>
-      <TodoList todos={this.state.todos} onClick={this.onClick}/>
+      <TodoList todos={this.state.todos} onClick={this.onClick} showCompleted={this.state.showCompleted}/>
       <Form onSubmit={this.onSubmit} onChange={this.onChange} name={this.state.name} toggle={this.toggleCompleted}/>
       </div>
     )
